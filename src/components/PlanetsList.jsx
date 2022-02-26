@@ -2,19 +2,33 @@ import React, { useContext, useEffect } from 'react';
 import StarWarsPlanetsContext from '../context/StarWarsPlanetsContext';
 
 export default function PlanetsList() {
-  const { planets, getPlanets, filter } = useContext(StarWarsPlanetsContext);
+  const {
+    planets, getPlanets, filter: { filterByNumericValues, filterByName },
+  } = useContext(StarWarsPlanetsContext);
 
   useEffect(() => {
     if (planets.length === 0) getPlanets();
   });
+
+  const comparisonOperator = (planet) => {
+    const { column, comparison, value } = filterByNumericValues;
+    switch (comparison) {
+    case 'menor que':
+      return Number(planet[column]) < value;
+    case 'maior que':
+      return Number(planet[column]) > value;
+    case 'igual a':
+      return planet[column] === value;
+    default:
+      return true;
+    }
+  };
 
   if (planets.length === 0) return <h2>Carregando</h2>;
 
   return (
 
     <section>
-      { console.log(planets) }
-      { console.log(filter) }
       <h1>Planets List</h1>
 
       <table>
@@ -37,7 +51,8 @@ export default function PlanetsList() {
         </thead>
         <tbody>
           { planets
-            .filter(((planet) => planet.name.includes(filter.filterByName.name)))
+            .filter((planet) => comparisonOperator(planet))
+            .filter(((planet) => (planet.name.includes(filterByName.name))))
             .map((planet) => (
               <tr key={ planet.name }>
                 <td>{ planet.name }</td>
