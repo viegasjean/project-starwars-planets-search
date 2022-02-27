@@ -7,11 +7,13 @@ function StarWarsPlanetsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [filter, setFilter] = useState({
     filterByName: { name: '' },
-    filterByNumericValues: {
-      column: 'population',
-      comparison: 'maior que',
-      value: 0,
-    },
+    filterByNumericValues: [
+      {
+        column: 'population',
+        comparison: 'maior que',
+        value: 0,
+      },
+    ],
   });
 
   const getPlanets = async () => {

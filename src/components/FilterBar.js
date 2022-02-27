@@ -19,7 +19,7 @@ function FilterBar() {
   const handleClick = () => {
     setFilter({
       ...filter,
-      filterByNumericValues: values,
+      filterByNumericValues: [...filter.filterByNumericValues, values],
     });
   };
 

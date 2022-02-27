@@ -10,20 +10,6 @@ export default function PlanetsList() {
     if (planets.length === 0) getPlanets();
   });
 
-  const comparisonOperator = (planet) => {
-    const { column, comparison, value } = filterByNumericValues;
-    switch (comparison) {
-    case 'menor que':
-      return Number(planet[column]) < value;
-    case 'maior que':
-      return Number(planet[column]) > value;
-    case 'igual a':
-      return planet[column] === value;
-    default:
-      return true;
-    }
-  };
-
   if (planets.length === 0) return <h2>Carregando</h2>;
 
   return (
@@ -51,8 +37,20 @@ export default function PlanetsList() {
         </thead>
         <tbody>
           { planets
-            .filter((planet) => comparisonOperator(planet))
-            .filter(((planet) => (planet.name.includes(filterByName.name))))
+            .filter((planet) => (
+              filterByNumericValues.every((filter, index) => {
+                if (index === 0) return true;
+                const { column, comparison, value } = filter;
+                switch (comparison) {
+                case 'menor que':
+                  return Number(planet[column]) <= value;
+                case 'maior que':
+                  return Number(planet[column]) > value;
+                default:
+                  return planet[column] === value;
+                }
+              })))
+            .filter((planet) => (planet.name.includes(filterByName.name)))
             .map((planet) => (
               <tr key={ planet.name }>
                 <td>{ planet.name }</td>
