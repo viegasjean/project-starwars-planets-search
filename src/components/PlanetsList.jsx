@@ -43,7 +43,7 @@ export default function PlanetsList() {
                 const { column, comparison, value } = filter;
                 switch (comparison) {
                 case 'menor que':
-                  return Number(planet[column]) <= value;
+                  return Number(planet[column]) < value;
                 case 'maior que':
                   return Number(planet[column]) > value;
                 default:
