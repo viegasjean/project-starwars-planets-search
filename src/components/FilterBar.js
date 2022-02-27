@@ -8,6 +8,13 @@ function FilterBar() {
     comparison: 'maior que',
     value: 0,
   });
+  const [options] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   const handleChange = ({ target: { name, value } }) => {
     setValues({
@@ -21,6 +28,7 @@ function FilterBar() {
       ...filter,
       filterByNumericValues: [...filter.filterByNumericValues, values],
     });
+    options.splice(options.indexOf(values.column), 1);
   };
 
   return (
@@ -31,11 +39,9 @@ function FilterBar() {
         value={ values.column }
         onChange={ handleChange }
       >
-        <option>population</option>
-        <option>orbital_period</option>
-        <option>diameter</option>
-        <option>rotation_period</option>
-        <option>surface_water</option>
+        {
+          options.map((option) => <option key={ option }>{ option }</option>)
+        }
       </select>
 
       <select
